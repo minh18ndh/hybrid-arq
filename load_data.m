@@ -1,4 +1,4 @@
-data = load('encoded_file_k64.mat');
+data = load('encoded_64pkts_file.mat');
 
 % 'data' to view 'structure with one field named encoded_file contains a 512 × 254 double-precision matrix'
 

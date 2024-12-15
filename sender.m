@@ -3,7 +3,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Load encoded data matrix
-load('encoded_file_k64.mat');
+load('encoded_64pkts_file.mat');
 
 % suppress warning
 warning('off','all');
@@ -56,17 +56,22 @@ while 1
 
     % transmission time
     while cs > 0
-        DataToSend = [f, l, cs, i, encoded_file(f,i)];
-        fwrite(send,DataToSend,'int32');
+        % Ensure f stays within bounds of encoded_file
+        %if f > size(encoded_file, 1)
+         %   f = size(encoded_file, 1);  % Reset f to maximum row index
+        %end
+        
+        DataToSend = [f, l, cs, i, encoded_file(f, i)];
+        fwrite(send, DataToSend, 'int32');
         cs = cs-1;
         total_tx_pkts = total_tx_pkts+1;
-        i = mod(i+1,n+1);
+        i = mod(i+1, n+1);
         
         if i == 0
             i = 1;
         end
-        
     end
+
     fclose(send);
         
     previous_f = f;

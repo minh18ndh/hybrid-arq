@@ -13,7 +13,7 @@ matrix = file_to_decode;
 
 m = 8;
 n = 254;
-k = 32;
+k = 8;
 
 pkt_no = size(matrix,1);
 
@@ -39,13 +39,13 @@ for i = 1:pkt_no
     decoded_pkt = rsdec(matrix_gf(i,:),n,k);
     decoded_file_gf(i,:) = decoded_pkt;
     
-    display(i);
+    disp(i);
 end
 
 decoded_file = gf2double(decoded_file_gf);
 
 % check if decoding succeeded
-% load('original_file_k32.mat');
+% load('original_128pkts_file.mat');
 
 successfully_decoded = zeros(pkt_no,1);
 for i = 1:size(decoded_file,1)

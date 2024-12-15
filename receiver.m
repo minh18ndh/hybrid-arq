@@ -14,7 +14,7 @@ receive = tcpip('127.0.0.1', 4013,'NetworkRole','server','Timeout',0.5);
 fopen(send);
 pause(0.2);
 
-k = 64;
+k = 8;
 n = 254;
 
 error_correction_capability = floor((n-k)/2);
@@ -25,7 +25,7 @@ loss_p = 0.1;
 % set channel error probability
 error_p = 0.001;
 
-pkts_to_require = 512;
+pkts_to_require = 64;
 
 %% initialization
 cr = 0;

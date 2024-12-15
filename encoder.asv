@@ -10,9 +10,9 @@ m = 8;              % Number of bits per symbol
 
 % n-k must be a positive even integer
 n = 254;            % 2^m - 2: codeword length
-k = 8;              % Word length
+k = 2;              % Word length
 
-pkt_no = 64;        % Number of packets of original file
+pkt_no = 128;       % Number of packets of original file
 
 tic;
 
@@ -29,14 +29,15 @@ for i = 1:pkt_no
     disp(i);
 end
 
-original_file = gf2double(original_file_gf);
 encoded_file = gf2double(encoded_file_gf);
+
+original_file = gf2double(original_file_gf);
 
 time = toc;
 
 display(time);
 
-save('original_64pkts_file.mat', 'original_file');
-save('encoded_64pkts_file.mat', 'encoded_file');
+disp(original_file);
+disp(original_file);
 
 end
