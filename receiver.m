@@ -23,7 +23,7 @@ error_correction_capability = floor((n-k)/2);
 loss_p = 0.1;
 
 % set channel error probability
-error_p=  0.001;
+error_p = 0.001;
 
 pkts_to_require = 512;
 

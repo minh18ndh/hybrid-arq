@@ -32,7 +32,6 @@ total_tx_pkts = 0;
 
 while 1
     %% receive R[f, cr]
-    
     % Read data from the socket
     try
         DataReceived = fread(receive,2,'int32');

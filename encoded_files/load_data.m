@@ -4,7 +4,7 @@ data = load('encoded_file_k64.mat');
 
 encoded_matrix = data.encoded_file;
 
-% View first 2 rows
+%% View first 2 rows
 %first_two_rows = data.encoded_file(1:2, :);
 %disp(first_two_rows);
 

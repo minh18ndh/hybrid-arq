@@ -10,7 +10,7 @@ m = 8;              % Number of bits per symbol
 n = 254;            % 2^m - 2: codeword length
 k = 2;              % Word length
 
-pkt_no = 512;         % Number of packets of original file (l)
+pkt_no = 512;       % Number of packets of original file
 
 tic;
 
