@@ -1,4 +1,5 @@
 function [ encoded_file, original_file ] = encoder( )
+% '[encoded_file, original_file] = encoder()' to run the encoder
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generate and encode data        %

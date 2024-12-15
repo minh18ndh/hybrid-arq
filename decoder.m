@@ -44,8 +44,6 @@ end
 decoded_file = gf2double(decoded_file_gf);
 
 % check if decoding succeeded
-% load('original_128pkts_file.mat');
-
 successfully_decoded = zeros(pkt_no, 1);
 for i = 1 : size(decoded_file, 1)
     if isequal(original_file(i,:), decoded_file(i,:))

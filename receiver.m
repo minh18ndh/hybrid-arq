@@ -40,7 +40,6 @@ f = 1;
 % received pkts counter
 rx_no = 0;
 
-txSec = 10;
 received_pkts_no = zeros(pkts_to_require, 1);
 channel_losses = 0;
 channel_errors = 0;
