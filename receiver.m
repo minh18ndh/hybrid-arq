@@ -10,9 +10,6 @@ disp ('Receiver started');
 send = tcpip('127.0.0.1',4014);
 receive = tcpip('127.0.0.1', 4013,'NetworkRole','server','Timeout',0.5);
 
-% send = tcpip('172.21.234.242',4014);
-% receive = tcpip('172.21.234.242', 4013,'NetworkRole','server');
-
 % Open socket and wait before sending data
 fopen(send);
 pause(0.2);

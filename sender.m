@@ -12,9 +12,6 @@ warning('off','all');
 send = tcpip('127.0.0.1',4013);
 receive = tcpip('127.0.0.1', 4014,'NetworkRole','server');
 
-% send = tcpip('172.21.234.242',4013);
-% receive = tcpip('172.21.234.242', 4014,'NetworkRole','server');
-
 l = 96;
 n = size(encoded_file,2);
 
@@ -72,8 +69,7 @@ while 1
         
     end
     fclose(send);
-    
-    
+        
     previous_f = f;
     
 end
