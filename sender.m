@@ -9,11 +9,11 @@ load('encoded_64pkts_file.mat');
 warning('off','all');
 
 % Configuration and connection
-send = tcpip('127.0.0.1',4013);
-receive = tcpip('127.0.0.1', 4014,'NetworkRole','server');
+send = tcpip('127.0.0.1', 4013);
+receive = tcpip('127.0.0.1', 4014, 'NetworkRole', 'server');
 
 l = 96;
-n = size(encoded_file,2);
+n = size(encoded_file, 2);
 
 D = 1.5;
 
@@ -34,7 +34,7 @@ while 1
     %% receive R[f, cr]
     % Read data from the socket
     try
-        DataReceived = fread(receive,2,'int32');
+        DataReceived = fread(receive, 2, 'int32');
         f = DataReceived(1,1);
         cr = DataReceived(2,1);
     catch
@@ -47,7 +47,7 @@ while 1
     
     display(f);
 
-    cs = max(cs, D*(l-cr));
+    cs = max(cs, D * (l - cr));
 
     %% send S[f, l, cs, i, pi]
     % Open socket and wait before sending data
@@ -55,17 +55,12 @@ while 1
     pause(0.2);
 
     % transmission time
-    while cs > 0
-        % Ensure f stays within bounds of encoded_file
-        %if f > size(encoded_file, 1)
-         %   f = size(encoded_file, 1);  % Reset f to maximum row index
-        %end
-        
+    while cs > 0   
         DataToSend = [f, l, cs, i, encoded_file(f, i)];
         fwrite(send, DataToSend, 'int32');
-        cs = cs-1;
-        total_tx_pkts = total_tx_pkts+1;
-        i = mod(i+1, n+1);
+        cs = cs - 1;
+        total_tx_pkts = total_tx_pkts + 1;
+        i = mod(i + 1, n + 1);
         
         if i == 0
             i = 1;

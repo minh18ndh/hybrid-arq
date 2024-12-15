@@ -16,14 +16,14 @@ pkt_no = 64;        % Number of packets of original file
 
 tic;
 
-original_file_gf = gf(zeros(pkt_no,k),m);
-encoded_file_gf = gf(zeros(pkt_no,n),m);
+original_file_gf = gf(zeros(pkt_no, k), m);
+encoded_file_gf = gf(zeros(pkt_no, n), m);
 
-for i = 1:pkt_no
-    original_pkt = gf(randi([0,1],k,1), m);    % Two rows of m-bit symbols
+for i = 1 : pkt_no
+    original_pkt = gf(randi([0,1], k, 1), m);    % Two rows of m-bit symbols
     original_file_gf(i,:) = original_pkt;
     
-    encoded_pkt = transpose(rsenc(transpose(original_pkt),n,k));
+    encoded_pkt = transpose(rsenc(transpose(original_pkt), n, k));
     encoded_file_gf(i,:) = encoded_pkt;
     
     disp(i);

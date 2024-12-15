@@ -1,3 +1,6 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%
+% Check decoding result %
+%%%%%%%%%%%%%%%%%%%%%%%%%
 
 save('received_64pkts_file.mat', 'received_file');
 
@@ -11,11 +14,12 @@ load('original_64pkts_file.mat');
 [decoding_failures, successfully_decoded, decoded_file] = decoder(received_file, original_file);
 
 % Display results
-disp('Decoding Failures:');
+disp('Decoding failures:');
 disp(decoding_failures);
 
-disp('Successfully Decoded:');
-disp(successfully_decoded);
+total_successful = sum(successfully_decoded);  % Count the number of 1s in successfully_decoded
+disp('Decoding success:');
+disp(total_successful);
 
 % Save the decoded file
 save('decoded_64pkts_file.mat', 'decoded_file');

@@ -1,5 +1,4 @@
-function [ decoding_failures, successfully_decoded, decoded_file ] = ...
-    decoder( file_to_decode, original_file )
+function [ decoding_failures, successfully_decoded, decoded_file ] = decoder( file_to_decode, original_file )
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Decodes received file                             %
@@ -15,28 +14,28 @@ m = 8;
 n = 254;
 k = 8;
 
-pkt_no = size(matrix,1);
+pkt_no = size(matrix, 1);
 
 decoding_failures = pkt_no;
 
 % replace -1 with 0 in the matrix
-for i = 1:pkt_no
-    for j = 1:n
-        if matrix(i,j) == -1
-            matrix(i,j) = 0;
+for i = 1 : pkt_no
+    for j = 1 : n
+        if matrix(i, j) == -1
+            matrix(i, j) = 0;
         end
     end
 end
 
 % convert matrix from double to gf
-matrix_gf = gf(matrix,m);
+matrix_gf = gf(matrix, m);
 
 tic;
 
 % decode
-decoded_file_gf = gf(zeros(pkt_no,k),m);
-for i = 1:pkt_no
-    decoded_pkt = rsdec(matrix_gf(i,:),n,k);
+decoded_file_gf = gf(zeros(pkt_no, k), m);
+for i = 1 : pkt_no
+    decoded_pkt = rsdec(matrix_gf(i,:), n, k);
     decoded_file_gf(i,:) = decoded_pkt;
     
     disp(i);
@@ -47,11 +46,11 @@ decoded_file = gf2double(decoded_file_gf);
 % check if decoding succeeded
 % load('original_128pkts_file.mat');
 
-successfully_decoded = zeros(pkt_no,1);
-for i = 1:size(decoded_file,1)
+successfully_decoded = zeros(pkt_no, 1);
+for i = 1 : size(decoded_file, 1)
     if isequal(original_file(i,:), decoded_file(i,:))
-        successfully_decoded(i,1) = 1;
-        decoding_failures = decoding_failures-1;
+        successfully_decoded(i, 1) = 1;
+        decoding_failures = decoding_failures - 1;
     end
 end
 

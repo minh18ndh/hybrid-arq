@@ -3,12 +3,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % suppress warning
-warning('off', 'all');
+warning('off','all');
 
 % Configuration and connection
 disp ('Receiver started');
-send = tcpip('127.0.0.1', 4014);
-receive = tcpip('127.0.0.1', 4013, 'NetworkRole', 'server', 'Timeout', 0.5);
+send = tcpip('127.0.0.1',4014);
+receive = tcpip('127.0.0.1', 4013,'NetworkRole','server','Timeout',0.5);
 
 % Open socket and wait before sending data
 fopen(send);
@@ -19,7 +19,7 @@ n = 254;
 
 pkts_to_require = 64;
 
-error_correction_capability = floor((n - k) / 2);
+error_correction_capability = floor((n-k)/2);
 
 % set channel loss probability
 loss_p = 0.1;
@@ -61,11 +61,11 @@ while f <= pkts_to_require
     while flag       
         try
             DataReceived = fread(receive, 5, 'int32');
-            f1 = DataReceived(1,1);
-            l = DataReceived(2,1);
-            cs = DataReceived(3,1);
-            i = DataReceived(4,1);
-            pi = DataReceived(5,1);
+            f1 = DataReceived(1, 1);
+            l = DataReceived(2, 1);
+            cs = DataReceived(3, 1);
+            i = DataReceived(4, 1);
+            pi = DataReceived(5, 1);
         catch
             break;
         end
@@ -86,10 +86,10 @@ while f <= pkts_to_require
                 if rand(1) > error_p
                     received_file(f1, i) = pi;
                 else
-                    received_file(f1, i) = randi(n + 1) - 1;
+                    received_file(f1, i) = randi(n+1) - 1;
                     channel_errors = channel_errors + 1;
                 end
-                cr = cr + 1;
+                cr = cr+1;
             else
                 channel_losses = channel_losses + 1;
             end
