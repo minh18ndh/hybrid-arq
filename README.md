@@ -1,6 +1,6 @@
 # HARQ
-Matlab implementation of HARQ sender and receiver
+HARQ sender and receiver simulation using MATLAB.
 
-Encode/decode data to send/received with the encoder/decoder functions.
+Use Reed-Solomon (RS) encoding method for Forward Error Correction (FEC).
 
 Start sender first and then receiver on a different Matlab instance or thread.
