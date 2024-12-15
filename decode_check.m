@@ -2,8 +2,6 @@
 % Check decoding result %
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
-save('received_64pkts_file.mat', 'received_file');
-
 % Load the received file (from the receiver)
 load('received_64pkts_file.mat');
 

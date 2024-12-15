@@ -29,7 +29,7 @@ disp('Connection OK');
 fopen(send);  % Open the sender socket once
 
 previous_f = 0;
-total_tx_pkts = 0;
+total_transmitted_symbols = 0;
 
 while 1
     %% Receive R[f, cr]
@@ -57,7 +57,7 @@ while 1
 
         % Update counters
         cs = cs - 1;
-        total_tx_pkts = total_tx_pkts + 1;
+        total_transmitted_symbols = total_transmitted_symbols + 1;
         i = mod(i + 1, n + 1);
         if i == 0
             i = 1;
