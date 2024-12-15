@@ -12,20 +12,20 @@ receive = tcpip('127.0.0.1', 4013, 'NetworkRole', 'server', 'Timeout', 0.5);
 
 % Open socket and wait before sending data
 fopen(send);
-pause(0.2);
+pause(0.01);
 
-k = 8;
 n = 254;
+k = 128;
 
 pkts_to_require = 64;
 
 error_correction_capability = floor((n - k) / 2);
 
 % set channel loss probability
-loss_p = 0.1;
+loss_p = 0.01;
 
 % set channel error probability
-error_p = 0.001;
+error_p = 0.0001;
 
 %% initialization
 cr = 0;
@@ -40,7 +40,7 @@ f = 1;
 % received pkts counter
 rx_no = 0;
 
-received_pkts_no = zeros(pkts_to_require, 1);
+received_symbols_per_packet = zeros(pkts_to_require, 1);
 channel_losses = 0;
 channel_errors = 0;
 dec = 1;
@@ -107,7 +107,7 @@ while f <= pkts_to_require
     if not_rx_no <= error_correction_capability
         for i = 1 : size(received_file, 2)
             if received_file(f, i) > -1
-                received_pkts_no(f) = received_pkts_no(f) + 1;
+                received_symbols_per_packet(f) = received_symbols_per_packet(f) + 1;
             end
         end
         
@@ -119,7 +119,7 @@ while f <= pkts_to_require
     end
     
     cr = 0;
-    
+  
 end
 
 fclose(send);

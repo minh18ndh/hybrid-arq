@@ -12,7 +12,7 @@ warning('off','all');
 send = tcpip('127.0.0.1', 4013);
 receive = tcpip('127.0.0.1', 4014, 'NetworkRole', 'server');
 
-l = 96;
+l = 120;
 n = size(encoded_file, 2);
 
 D = 1.5;
@@ -52,7 +52,7 @@ while 1
     %% send S[f, l, cs, i, pi]
     % Open socket and wait before sending data
     fopen(send);
-    pause(0.2);
+    pause(0.01);
 
     % transmission time
     while cs > 0   

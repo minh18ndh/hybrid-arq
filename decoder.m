@@ -12,7 +12,7 @@ matrix = file_to_decode;
 
 m = 8;
 n = 254;
-k = 8;
+k = 128;
 
 pkt_no = size(matrix, 1);
 

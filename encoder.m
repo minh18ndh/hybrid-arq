@@ -11,7 +11,7 @@ m = 8;              % Number of bits per symbol
 
 % n-k must be a positive even integer
 n = 254;            % 2^m - 2: codeword length
-k = 8;              % Word length
+k = 128;            % Word length
 
 pkt_no = 64;        % Number of packets of original file
 
