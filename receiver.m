@@ -73,7 +73,7 @@ while f <= pkts_to_require
         if rand(1) > loss_p
             % Check for channel errors
             if rand(1) > error_p
-                % Check for retransmission
+                % Check for redundant retransmission
                 if received_file(f1, i) ~= -1
                     retransmitted_symbols = retransmitted_symbols + 1;
                 end
