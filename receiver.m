@@ -7,8 +7,12 @@ warning('off', 'all');
 
 % Configuration and connection
 disp('Receiver started');
-send = tcpip('127.0.0.1', 4014); % Socket for sending feedback
-receive = tcpip('127.0.0.1', 4013, 'NetworkRole', 'server', 'Timeout', 0.5'); % Socket for receiving data
+%send = tcpip('127.0.0.1', 4014); % Socket for sending feedback
+%receive = tcpip('127.0.0.1', 4013, 'NetworkRole', 'server', 'Timeout', 0.5'); % Socket for receiving data
+
+% Replace 'SENDER_IP' with the actual IP address of the sender machine
+send = tcpip('10.9.7.162', 4014);
+receive = tcpip('0.0.0.0', 4013, 'NetworkRole', 'server', 'Timeout', 0.5);
 
 % Open sockets
 fopen(send);
