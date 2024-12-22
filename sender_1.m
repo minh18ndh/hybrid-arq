@@ -29,6 +29,8 @@ disp('Connection OK');
 
 previous_f = 0;
 
+total_transmitted_symbols = 0;
+
 while 1
     %% receive R[f, cr]
     
