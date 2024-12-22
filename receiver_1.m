@@ -5,8 +5,8 @@ warning('off','all');
 
 % Configuration and connection
 disp ('Receiver started');
-send=tcpip('127.0.0.1',4014);
-receive=tcpip('127.0.0.1', 4013,'NetworkRole','server', 'Timeout', 0.5);
+send = tcpip('127.0.0.1',4014);
+receive = tcpip('127.0.0.1', 4013,'NetworkRole','server', 'Timeout', 0.5);
 
 %send = tcpip('10.9.7.162', 4014);
 %receive = tcpip('0.0.0.0', 4013, 'NetworkRole', 'server', 'Timeout', 0.5);
@@ -18,7 +18,7 @@ pause(0.01);
 n = 254;
 k = 128;
 
-error_correction_capability=floor((n-k)/2);
+error_correction_capability = floor((n-k)/2);
 
 % set channel loss probability
 loss_p = 0.1;
@@ -36,7 +36,7 @@ tic;
 received_file = -1 * ones(pkts_to_require, n);
 
 %% request time
-f=1; 
+f = 1; 
 
 retransmitted_symbols = 0; 
 
@@ -51,72 +51,65 @@ while f <= pkts_to_require
     
     sprintf('%4.1f', str2double([num2str(f), '.', num2str(dec)]))
     
-    % receive S[f, l, cs, i, pi]
+    % receive S[f, l, cs, i, value_i]
     fopen(receive);
 
-    flag = 1;
-    first_round = 1;
-    while flag    
+    while 1
         try
             DataReceived = fread(receive, 5, 'int32');
             f1 = DataReceived(1,1);
             l = DataReceived(2,1);
             cs = DataReceived(3,1);
             i = DataReceived(4,1);
-            pi = DataReceived(5,1);
+            value_i = DataReceived(5,1);
         catch
             break;
         end
-        
-        % compute D
-        if first_round
-            D = cs/l;
-            first_round = 0;
-        end
-        
-        if cr >= l*D
-            flag = 0;
-        end
                     
-            % introduce losses in the channel
-            if rand(1) > loss_p
-                % introduce errors in the channel
-                if rand(1) > error_p
-                    if received_file(f1, i) ~= -1
-                        retransmitted_symbols = retransmitted_symbols + 1;
-                    end
-                    received_file(f1,i) = pi;
-                else
-                    received_file(f1,i) = randi(n+1) - 1;
-                    channel_errors = channel_errors + 1;
+        % introduce losses in the channel
+        if rand(1) > loss_p
+            % introduce errors in the channel
+            if rand(1) > error_p
+                % received symbol is not lost or erroneous but useless
+                if received_file(f1,i) ~= -1 % symbol position already received
+                    retransmitted_symbols = retransmitted_symbols + 1;
                 end
-                cr = cr+1;
+                received_file(f1,i) = value_i;
             else
-                channel_losses = channel_losses + 1;
-            end        
+                received_file(f1,i) = randi(n+1) - 1; % assign random symbol value for error simulation
+                channel_errors = channel_errors + 1;
+            end
+            cr = cr+1; % increase total number of received symbols (both correct and incorrect)
+            %disp(['cr = ', num2str(cr)]);
+        else
+            channel_losses = channel_losses + 1;
+        end        
     end
+    %disp(['cr = ', num2str(cr)]);
     fclose(receive);
-
+    
+    % calculate missing symbols for ACK/NACK decision
     not_received_symbols = 0;
     for i = 1:size(received_file, 2)
         if received_file(f,i) == -1
             not_received_symbols = not_received_symbols + 1;
         end
     end
+    disp(['nrs = ', num2str(not_received_symbols)]);
     
-    % ask for pi
+    % if can decode then ask for next packet (send ACK)
     if not_received_symbols <= error_correction_capability
-        for i=1:size(received_file,2)
+        for i = 1:size(received_file,2)
             if received_file(f,i) > -1
                 received_symbols_per_packet(f) = received_symbols_per_packet(f) + 1;
             end
         end
         
-        % ask for another file
+        % ask for next packet
         f = f+1;
         dec = 1;
     else
-        dec = dec+1;
+        dec = dec+1; % increase the number of transmission attempt for 1 packet
     end
     
     cr = 0;

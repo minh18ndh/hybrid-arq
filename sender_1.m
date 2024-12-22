@@ -7,13 +7,13 @@ load('encoded_64pkts_file.mat');
 warning('off','all');
 
 % Configuration and connection
-send=tcpip('127.0.0.1', 4013);
-receive=tcpip('127.0.0.1', 4014, 'NetworkRole', 'server');
+send = tcpip('127.0.0.1', 4013);
+receive = tcpip('127.0.0.1', 4014, 'NetworkRole', 'server');
 
 %send = tcpip('10.9.7.x', 4013);  
 %receive = tcpip('0.0.0.0', 4014, 'NetworkRole', 'server');  % Listen on all interfaces
 
-l = 96;
+l = 128;
 n = size(encoded_file,2);
 
 D = 1.5;
@@ -43,15 +43,15 @@ while 1
         continue;
     end
     
-    if f ~= previous_f
+    if f ~= previous_f % receiver requests a new packet => i is reset to beginning of the packet
         i = 1;
     end
     
     display(f);
 
-    cs = max(cs, D*(l-cr));
+    cs = D*l;
 
-    %% send S[f, l, cs, i, pi]
+    %% send S[f, l, cs, i, value_i]
     % Open socket and wait before sending data
     fopen(send);
     pause(0.01);
@@ -62,15 +62,15 @@ while 1
         fwrite(send,DataToSend,'int32');
         cs = cs-1;
         total_transmitted_symbols = total_transmitted_symbols + 1;
-        i = mod(i+1, n+1);
+        i = mod(i+1, n+1); % cycle through symbols in the packet
         
         if i == 0
-            i = 1;
+            i = 1; % reset to first symbol if end of packet is reached
         end
         
     end
     fclose(send);
     
-    previous_f = f;
+    previous_f = f; % update the previously requested packet index
     
 end
