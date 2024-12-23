@@ -39,6 +39,7 @@ received_file = -1 * ones(pkts_to_require, n);
 f = 1; 
 
 retransmitted_symbols = 0; 
+total_packet_retransmissions = 0;
 
 received_symbols_per_packet = zeros(pkts_to_require,1);
 channel_losses = 0;
@@ -46,22 +47,20 @@ channel_errors = 0;
 dec = 1;
 
 while f <= pkts_to_require
-    DataToSend = [f, cr];
+    DataToSend = [f];
     fwrite(send, DataToSend, 'int32');
     
     sprintf('%4.1f', str2double([num2str(f), '.', num2str(dec)]))
     
-    % receive S[f, l, cs, i, value_i]
+    % receive DataSend_fromSender = [f, i, value_i]
     fopen(receive);
 
     while 1
         try
-            DataReceived = fread(receive, 5, 'int32');
+            DataReceived = fread(receive, 3, 'int32');
             f1 = DataReceived(1,1);
-            l = DataReceived(2,1);
-            cs = DataReceived(3,1);
-            i = DataReceived(4,1);
-            value_i = DataReceived(5,1);
+            i = DataReceived(2,1);
+            value_i = DataReceived(3,1);
         catch
             break;
         end
@@ -80,7 +79,7 @@ while f <= pkts_to_require
                 channel_errors = channel_errors + 1;
             end
             cr = cr+1; % increase total number of received symbols (both correct and incorrect)
-            %disp(['cr = ', num2str(cr)]);
+            
         else
             channel_losses = channel_losses + 1;
         end        
@@ -95,7 +94,6 @@ while f <= pkts_to_require
             not_received_symbols = not_received_symbols + 1;
         end
     end
-    disp(['nrs = ', num2str(not_received_symbols)]);
     
     % if can decode then ask for next packet (send ACK)
     if not_received_symbols <= error_correction_capability
@@ -110,10 +108,13 @@ while f <= pkts_to_require
         dec = 1;
     else
         dec = dec+1; % increase the number of transmission attempt for 1 packet
+        total_packet_retransmissions = total_packet_retransmissions + 1;
     end
-    
+
+    disp(['cr = ', num2str(cr)]);
+    disp(['nrs = ', num2str(not_received_symbols)]);
     cr = 0;
-    
+ 
 end
 
 fclose(send);
@@ -123,6 +124,7 @@ time = toc;
 
 % Display results
 disp('Simulation complete.');
+disp(['Total packet retransmissions: ', num2str(total_packet_retransmissions)]);
 disp(['Total retransmitted symbols: ', num2str(retransmitted_symbols)]);
 disp(['Total time elapsed: ', num2str(time), ' seconds.']);
 
