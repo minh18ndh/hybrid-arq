@@ -96,7 +96,7 @@ while f <= pkts_to_require
     end
     
     % if can decode then ask for next packet (send ACK)
-    if not_received_symbols <= error_correction_capability
+    if not_received_symbols <= error_correction_capability || dec >= 2
         for i = 1:size(received_file,2)
             if received_file(f,i) > -1
                 received_symbols_per_packet(f) = received_symbols_per_packet(f) + 1;
